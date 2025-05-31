@@ -6,6 +6,7 @@ import com.sujal.LinkedinProject.userService.dto.UserDTO;
 import com.sujal.LinkedinProject.userService.entities.User;
 import com.sujal.LinkedinProject.userService.exceptions.BadRequestException;
 import com.sujal.LinkedinProject.userService.repositories.UserRepository;
+import com.sujal.LinkedinProject.userService.utils.BCrypt;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -19,7 +20,9 @@ import static com.sujal.LinkedinProject.userService.utils.BCrypt.hash;
 public class AuthService {
 
     private final UserRepository userRepository;
+
     private final ModelMapper modelMapper;
+    private final JwtService jwtService;
 
     public UserDTO signUp(SignupRequestDTO signupRequestDTO) {
         log.info("Signup a user with email: {}",signupRequestDTO.getEmail());
@@ -38,7 +41,19 @@ public class AuthService {
     }
 
     public String login(LoginRequestDTO loginRequestDTO) {
+        log.info("Logging in user with email: {}",loginRequestDTO.getEmail());
+//        Authentication authentication = authenticationManager.authenticate(
+//                new UsernamePasswordAuthenticationToken(loginRequestDTO.getEmail(),loginRequestDTO.getPassword())
+//        );
 
-        return "lgon";
+        User user = userRepository.findByEmail(loginRequestDTO.getEmail()).orElseThrow(()-> new BadRequestException("Incorrect email or password"));
+
+        boolean isPasswordMatch = BCrypt.match(loginRequestDTO.getPassword(),user.getPassword());
+
+        if(!isPasswordMatch){
+            throw new BadRequestException("Incorrect Email or Password");
+        }
+        return jwtService.generateAccessToken(user);
+
     }
 }
