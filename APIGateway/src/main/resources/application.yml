@@ -1,3 +1,5 @@
+jwt.secretKey: akldfldkjfoiejfk1232843u49jakldidfnviiupasdkfnlkfdsjio
+
 spring:
   application:
     name: api-gateway
@@ -11,12 +13,22 @@ spring:
             - Path=/api/v1/users/**
           filters:
             - StripPrefix=2
+
         - id: posts-service
           uri: lb://POSTS-SERVICE
           predicates:
             - Path=/api/v1/posts/**
           filters:
             - StripPrefix=2
+            - name: AuthenticationFilter
+
+        - id: connections-service
+          uri: lb://CONNECTIONS-SERVICE
+          predicates:
+            - Path=/api/v1/connections/**
+          filters:
+            - StripPrefix=2
+            - name: AuthenticationFilter
 
   eureka:
     client:

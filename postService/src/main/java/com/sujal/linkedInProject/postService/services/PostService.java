@@ -1,7 +1,10 @@
 package com.sujal.linkedInProject.postService.services;
 
+import com.sujal.linkedInProject.postService.auth.AuthContextHolder;
+import com.sujal.linkedInProject.postService.clients.ConnectionsFeignClient;
 import com.sujal.linkedInProject.postService.dto.PostCreateRequestDTO;
 import com.sujal.linkedInProject.postService.dto.PostDTO;
+import com.sujal.linkedInProject.postService.entities.Person;
 import com.sujal.linkedInProject.postService.entities.Post;
 import com.sujal.linkedInProject.postService.exceptions.ResourceNotFoundException;
 import com.sujal.linkedInProject.postService.repositories.PostRepository;
@@ -20,6 +23,7 @@ public class PostService {
 
     private final PostRepository postRepository;
     private final ModelMapper modelMapper;
+    private final ConnectionsFeignClient connectionsFeignClient;
 
     public PostDTO createPost(PostCreateRequestDTO postDTO,Long userId) {
         Post postEntity = modelMapper.map(postDTO,Post.class);
@@ -31,6 +35,11 @@ public class PostService {
 
     public PostDTO getPostById(Long postId) {
         log.info("Getting the post with ID: {}",postId);
+        Long userId = AuthContextHolder.getCurrentUserId();
+
+
+        List<Person> PersonList = connectionsFeignClient.getFirstDegreeConnections(userId);
+
         Post post  =  postRepository.findById(postId).orElseThrow(()-> new ResourceNotFoundException("Post not found with ID: "+postId));
         return modelMapper.map(post,PostDTO.class);
 
