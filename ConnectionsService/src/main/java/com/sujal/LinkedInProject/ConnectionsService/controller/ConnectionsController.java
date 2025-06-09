@@ -27,4 +27,21 @@ public class ConnectionsController {
         return ResponseEntity.ok(personList);
     }
 
+    @PostMapping("/request/{receiverId}")
+    public ResponseEntity<Void> sendConnectionRequest(@PathVariable Long receiverId){
+        connectionsService.sendConnectionRequest(receiverId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/accept/{senderId}")
+    public ResponseEntity<Void> acceptConnectionRequest(@PathVariable Long senderId){
+        connectionsService.acceptConnectionRequest(senderId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/reject/{senderId}")
+    public ResponseEntity<Void> rejectConnectionRequest(@PathVariable Long senderId){
+        connectionsService.rejectConnectionRequest(senderId);
+        return ResponseEntity.noContent().build();
+    }
 }

@@ -1,4 +1,4 @@
-package com.sujal.LinkedinProject.userService;
+package com.sujal.LinkedInProject.userService;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -1,12 +1,16 @@
 package com.sujal.LinkedInProject.ConnectionsService.entity;
 
-import lombok.Data;
+import lombok.*;
 import org.springframework.data.neo4j.core.schema.GeneratedValue;
 import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
 
 @Node
-@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 public class Person {
 
     @Id

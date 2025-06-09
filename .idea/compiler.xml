@@ -10,6 +10,7 @@
       <module name="APIGateway" options="-parameters" />
       <module name="ConnectionsService" options="-parameters" />
       <module name="DiscoveryService" options="-parameters" />
+      <module name="notification-service" options="-parameters" />
       <module name="postService" options="-parameters" />
       <module name="userService" options="-parameters" />
     </option>
