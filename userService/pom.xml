@@ -10,8 +10,8 @@
 	</parent>
 	<groupId>com.sujal.LinkedInProject</groupId>
 	<artifactId>userService</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>userService</name>
+	<version>0.0.1</version>
+	<name>user-service</name>
 	<description>Demo project for Spring Boot</description>
 	<url/>
 	<licenses>
@@ -111,6 +111,27 @@
 
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>com.google.cloud.tools</groupId>
+				<artifactId>jib-maven-plugin</artifactId>
+				<version>3.4.4</version>
+				<configuration>
+					<to>
+						<image>docker.io/sujalphuse/ecommerce-${project.name}.${project.version}</image>
+						<tags>
+							<tag>latest</tag>
+						</tags>
+					</to>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>build</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>

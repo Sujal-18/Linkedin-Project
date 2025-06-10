@@ -7,8 +7,10 @@ import com.sujal.LinkedInProject.postService.services.PostService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -19,9 +21,9 @@ public class PostController {
 
     private final PostService postService;
 
-    @PostMapping
-    ResponseEntity<PostDTO> createPost(@RequestBody PostCreateRequestDTO postDTO, HttpServletRequest httpServletRequest){
-        PostDTO createdPostDto = postService.createPost(postDTO,1L);
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    ResponseEntity<PostDTO> createPost(@RequestPart("post")PostCreateRequestDTO postCreateRequestDTO, @RequestPart("file")MultipartFile file){
+        PostDTO createdPostDto = postService.createPost(postCreateRequestDTO,file) ;
         return new ResponseEntity<>(createdPostDto, HttpStatus.CREATED);
     }
 
