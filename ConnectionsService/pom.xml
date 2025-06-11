@@ -87,7 +87,7 @@
 				<version>3.4.4</version>
 				<configuration>
 					<to>
-						<image>docker.io/sujalphuse/ecommerce-${project.name}.${project.version}</image>
+						<image>docker.io/sujalphuse/linkedin-app-${project.name}.${project.version}</image>
 						<tags>
 							<tag>latest</tag>
 						</tags>
