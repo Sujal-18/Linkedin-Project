@@ -1,16 +1,15 @@
 package com.sujal.LinkedInProject.postService.config;
 
+import feign.codec.Encoder;
 import feign.form.spring.SpringFormEncoder;
-import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class AppConfig {
+public class EncoderService {
 
     @Bean
-    public ModelMapper modelMapper(){
-        return new ModelMapper();
+    public Encoder feignFormEncoder() {
+        return new SpringFormEncoder();
     }
-
 }

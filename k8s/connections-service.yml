@@ -31,11 +31,10 @@ spec:
           
           - name: DB_NAME
             value: connections-db
-
+          - name: KAFKA_LOG4J_ROOT_LOGLEVEL
+            value: "ERROR"
         ports:  
         - containerPort: 9030
-
-
 ---
 apiVersion: v1
 kind: Service

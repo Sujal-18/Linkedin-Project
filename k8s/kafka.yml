@@ -5,37 +5,27 @@ metadata:
     app: kafka
   name: kafka
 spec:
-  serviceName: kafka
   podManagementPolicy: Parallel
+  replicas: 2
   selector:
     matchLabels:
       app: kafka
-  replicas: 2
-  
+  serviceName: kafka
   template:
     metadata:
       labels:
         app: kafka
     spec:
       containers:
-      
-      - name: kafka
-        image: docker.io/confluentinc/confluent-local:7.5.0
-        imagePullPolicy: IfNotPresent
-        ports:
-        - containerPort: 9092
-          name: tcp-kafka-int
-          protocol: TCP
-        - containerPort: 29093
-          name: tcp-kafka-ctrl
-          protocol: TCP
-        resources:
-          requests:
-            cpu: "200m"
-            memory: 1Gi
-          limits:
-            cpu: 100m
-            memory: 512Mi
+      - command: #1@kafka-1.kafka:29093
+        - sh
+        - -exc
+        - |
+          export CLUSTER_ID="6PMpHYL9QkeyXRj9Nrp4KA" && \
+          export KAFKA_NODE_ID=${HOSTNAME##*-}
+          export KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://${POD_NAME}.kafka:9092
+          export KAFKA_CONTROLLER_QUORUM_VOTERS="0@kafka-0.kafka:29093,1@kafka-1.kafka:29093"                     
+          exec /etc/confluent/docker/run
         env:
         - name: KAFKA_CONTROLLER_LISTENER_NAMES 
           value: "CONTROLLER"
@@ -46,15 +36,23 @@ spec:
             fieldRef:
               apiVersion: v1
               fieldPath: metadata.name
-        command:
-        - sh
-        - -exc
-        - |
-          export CLUSTER_ID="6PMpHYL9QkeyXRj9Nrp4KA" && \
-          export KAFKA_NODE_ID=${HOSTNAME##*-}
-          export KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://${POD_NAME}.kafka:9092
-          export KAFKA_CONTROLLER_QUORUM_VOTERS="0@kafka-0.kafka:29093,1@kafka-1.kafka:29093"
-          exec /etc/confluent/docker/run
+        name: kafka
+        image: docker.io/confluentinc/confluent-local:7.5.0
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 9092
+          name: tcp-kafka-int
+          protocol: TCP
+        - containerPort: 29093
+          name: tcp-kafka-ctrl
+          protocol: TCP
+        resources:
+          limits:
+            cpu: "200m"
+            memory: 1Gi
+          requests:
+            cpu: 100m
+            memory: 512Mi
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:
@@ -65,8 +63,8 @@ spec:
         terminationMessagePath: /dev/termination-log
         terminationMessagePolicy: File
         volumeMounts:
-        - name: config
-          mountPath: /etc/kafka
+        - mountPath: /etc/kafka
+          name: config
       dnsPolicy: ClusterFirst
       schedulerName: default-scheduler
       securityContext:

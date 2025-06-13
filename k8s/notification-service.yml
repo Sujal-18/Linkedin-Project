@@ -16,10 +16,10 @@ spec:
         image: sujalphuse/linkedin-app-notification-service.0.0.1
         resources:
           limits:
-            memory: "400Mi"
+            memory: "400Mi"   #400
             cpu: "200m"
           requests:
-            memory: "200Mi"
+            memory: "200Mi"   #200
             cpu: "100m"
         env:
           - name: SPRING_PROFILES_ACTIVE

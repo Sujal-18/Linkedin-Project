@@ -40,7 +40,7 @@ public class PostService {
         log.info("Creating post for user with id: {}",userId);
 
         ResponseEntity<String> imageUrl = uploaderServiceFeignClient.uploadFile(file);
-
+        log.info(String.valueOf(imageUrl));
         Post postEntity = modelMapper.map(postDTO,Post.class);
         postEntity.setUserId(userId);
         postEntity.setImageUrl(imageUrl.getBody());
@@ -58,6 +58,7 @@ public class PostService {
             postCreatedKafkaTemplate.send(POST_CREATED_TOPIC,userId,postCreatedEvent);
         }
         return modelMapper.map(postEntity,PostDTO.class);
+
     }
 
     public PostDTO getPostById(Long postId) {
