@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
       - name: uploader-service
-        image: sujalphuse/linkedin-app-uploader-service.0.0.1
+        image: sujalphuse/linkedin-app-uploader-service.0.0.2
         resources:
           limits:
             memory: "400Mi"
@@ -24,6 +24,18 @@ spec:
         env:
           - name: SPRING_PROFILES_ACTIVE
             value: k8s
+
+          - name: GCLOUD_STORAGE_BUCKET_NAME
+            valueFrom:
+              secretKeyRef:
+                name: my-secret-linkedin
+                key: GCLOUD_BUCKET_NAME
+          
+          - name: GCLOUD_STORAGE_ACCESS_KEY
+            valueFrom:
+              secretKeyRef:
+                name: my-secret-linkedin
+                key: GCLOUD_ACCESS_KEY
         ports:
         - containerPort: 9050
 
