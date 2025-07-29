@@ -7,7 +7,7 @@ on:
 env:
   PROJECT_ID: ${{ secrets.GKE_PROJECT }}
   GKE_CLUSTER: project-cluster-linkedin
-  GKE_ZONE: asia-south1
+  GKE_ZONE: asia-south2
 
 jobs:
   Build:
